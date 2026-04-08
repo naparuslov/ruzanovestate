@@ -9,19 +9,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS — НАШИ ШЕЙДЕРЫ И МАТЕРИАЛЫ */
-        :root {
-            --primary-dark: #0a0b0e; /* Глубокий цвет ночного неба */
-            --primary-muted: #13161c; /* Чуть светлее для секций, холодный темный */
-            --accent-gold: #d4af37;  /* Настоящее золото */
-            --accent-gold-dark: #aa8929;
-            --accent-gold-gradient: linear-gradient(90deg, transparent, #d4af37, #ffdf73, #d4af37, transparent);
-            --text-light: #f5f5f5;
-            --text-muted: #b0b5be;
-            --white: #ffffff;
-            --transition-smooth: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            --font-handwritten: 'Caveat', cursive;
-        }
+        /* Добавляем современный шрифт Montserrat для основного текста */
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:wght@300;400;500;600&display=swap');
+
+    /* CSS — НАШИ ШЕЙДЕРЫ И МАТЕРИАЛЫ */
+    :root {
+        /* Делаем фон более атмосферным, сложным темно-серым, а не просто черным */
+        --primary-dark: #121418; 
+        --primary-muted: #1c2026; 
+        --accent-gold: #d4b86a;  /* Делаем золото чуть мягче, "матовым" */
+        --accent-gold-dark: #a38b47;
+        --accent-gold-gradient: linear-gradient(90deg, transparent, #d4b86a, #fcebaf, #d4b86a, transparent);
+        --text-light: #e4e7ec; /* Не чистый белый, чтобы не "резало" глаз */
+        --text-muted: #9aa0ab;
+        --white: #ffffff;
+        --transition-smooth: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        --font-handwritten: 'Caveat', cursive;
+        --font-main: 'Montserrat', sans-serif; /* Наш новый базовый шрифт */
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--font-main); /* Применяем его ко всей сцене */
+        cursor: none; 
+    }
 
         * {
             margin: 0;
@@ -43,7 +56,7 @@
             top: 0; left: 0;
             transform: translate(-50%, -50%);
             border-radius: 50%;
-            z-index: 9999;
+            z-index: 10000; /* Выше всего */
             pointer-events: none;
         }
         .cursor-dot {
@@ -61,20 +74,11 @@
             position: fixed;
             top: -10%; left: -10%; right: -10%; bottom: -10%;
             background: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1775635428/Hero22.png') center/cover;
-            opacity: 0.15; /* Сделали чуть прозрачнее для благородства */
+            opacity: 0.15;
             filter: blur(5px);
             z-index: -2;
             pointer-events: none;
             animation: breathe 20s ease-in-out infinite;
-        }
-
-        /* Канвас для искр */
-        #sparks-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -1;
-            pointer-events: none;
         }
 
         @keyframes breathe {
@@ -83,13 +87,26 @@
             100% { transform: scale(1); opacity: 0.15; }
         }
 
-        /* 2. Золотая Линия "Золотого Сечения" (Улучшенная) */
+        /* Канвас для искр (Исправленный z-index) */
+        #sparksCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1; /* На фоне, но перед кругами */
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        /* Убедимся, что контент сайта выше фона */
+        .hero, .section-padding, header, footer {
+            position: relative;
+            z-index: 5;
+        }
+
+        /* 2. Золотая Линия "Золотого Сечения" */
         .gold-divider {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
+            bottom: 0; left: 0; width: 100%; height: 2px;
             background: var(--accent-gold-gradient);
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
             z-index: 5;
@@ -160,12 +177,20 @@
             display: flex; align-items: center; justify-content: center; text-align: center;
         }
 
+        /* Наша панорама-коллаж */
         .hero-sky {
-            position: absolute; top: 0; left: 0; width: 300%; height: 100%;
-            background: url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2500&auto=format&fit=crop') center/cover;
-            animation: panSky 120s linear infinite; z-index: 1;
+            position: absolute;
+            top: 0; left: 0; width: 400%; height: 100%;
+            background: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1775643733/%D0%9F%D0%B0%D0%BD%D0%BE%D1%80%D0%B0%D0%BC%D0%B0.jpg') repeat-x; 
+            background-size: contain;
+            animation: panPanorama 40s linear infinite;
+            z-index: 1;
         }
-        @keyframes panSky { 0% { transform: translateX(0); } 100% { transform: translateX(-33%); } }
+
+        @keyframes panPanorama {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
         .hero-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -220,16 +245,25 @@
         }
 
         .card {
-            background: var(--primary-dark);
-            border-radius: 2px; /* Убрали сильное скругление для строгой формы */
+            background: rgba(28, 32, 38, 0.6); /* Полупрозрачный фон */
+            backdrop-filter: blur(10px); /* Тот самый эффект матового стекла */
+            border-radius: 16px; /* Современные мягкие углы */
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             transition: var(--transition-smooth);
             position: relative;
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 184, 106, 0.1); /* Очень тонкая рамка */
         }
 
-        /* Золотые уголки для карточек */
+        /* Сделаем золотые уголки тоньше и изящнее */
+        .card::before, .card::after {
+            content: ''; position: absolute; width: 40px; height: 40px;
+            border: 1px solid var(--accent-gold); /* Единичка вместо двойки */
+            transition: all 0.4s ease;
+            z-index: 10; pointer-events: none; opacity: 0.3; /* Более прозрачные */
+            border-radius: 4px; /* Чуть скруглим и их */
+        }
+
         .card::before, .card::after {
             content: ''; position: absolute; width: 30px; height: 30px;
             border: 2px solid var(--accent-gold); transition: all 0.4s ease;
@@ -248,15 +282,12 @@
         }
 
         .card-img-placeholder {
-            width: 100%; height: 280px;
-            background: rgba(212, 175, 55, 0.05);
+            width: 100%; height: 280px; background: rgba(212, 175, 55, 0.05);
             display: flex; align-items: center; justify-content: center;
             color: var(--accent-gold); font-weight: bold; font-size: 1.2rem;
-            background-size: cover; background-position: center;
-            position: relative; overflow: hidden;
+            background-size: cover; background-position: center; position: relative; overflow: hidden;
         }
         
-        /* Эффект зума картинки при наведении на карточку */
         .card-img-placeholder::after {
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
             background: inherit; transition: transform 0.8s ease; z-index: -1;
@@ -278,27 +309,19 @@
             transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .fly-in.visible { opacity: 1; transform: translateY(0) scale(1); }
-        
-        /* Задержки для поочередного вылетания */
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.3s; }
         .delay-3 { transition-delay: 0.5s; }
 
-
         /* Секция Отзывов */
         .reviews-wrapper { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
         .review-box {
-            background: var(--primary-dark); padding: 40px; border-radius: 2px;
-            width: 100%; max-width: 420px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            border-left: 4px solid var(--accent-gold);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
+            background: var(--primary-dark); padding: 40px; border-radius: 2px; width: 100%; max-width: 420px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 1px solid rgba(212, 175, 55, 0.1); border-left: 4px solid var(--accent-gold);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative;
         }
         .review-box:hover {
-            transform: scale(1.03); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
-            border-color: rgba(212, 175, 55, 0.3);
+            transform: scale(1.03); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3);
         }
         .review-author { font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; display: block; color: var(--accent-gold); }
         .review-text { color: var(--text-muted); font-style: italic; font-size: 1.1rem; line-height: 1.8; }
@@ -347,10 +370,30 @@
             .header-social { display: none; }
         }
 
-        /* Рукописный шрифт */
-        .hero-content p, .card-text, .review-text, #about p {
+        /* ТИПОГРАФИКА: Разделяем стили */
+        
+        /* Основной текст делаем чистым, тонким и легко читаемым */
+        .hero-content p, .card-text, #about p {
+            font-family: var(--font-main);
+            font-weight: 300; /* Тонкое начертание для элегантности */
+            font-size: 1.15rem; 
+            line-height: 1.6; 
+            letter-spacing: 0.5px;
+        }
+
+        /* Рукописный шрифт оставляем только для "душевных" элементов: отзывов и подзаголовков */
+        .review-text {
             font-family: var(--font-handwritten);
-            font-size: 1.6rem; line-height: 1.3; letter-spacing: 1px;
+            font-size: 1.6rem; 
+            line-height: 1.4; 
+            letter-spacing: 1px;
+            color: var(--accent-gold); /* Пусть отзывы светятся золотом */
+        }
+        
+        /* Акция тоже пусть выделяется */
+        #about p:last-child {
+            font-weight: 500;
+            color: var(--accent-gold);
         }
     </style>
 </head>
@@ -360,7 +403,7 @@
     <div class="cursor-outline"></div>
 
     <div class="global-bg-circles"></div>
-    <canvas id="sparks-canvas"></canvas>
+    <canvas id="sparksCanvas"></canvas>
 
     <header>
         <div class="logo">Усадьба Рузановых</div>
@@ -391,7 +434,7 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>Усадьба Рузановых</h1>
-            <p>Почувствуйте магию Алтая. Ваш уютный причал на берегу легендарного Телецкого озера.</p>
+            <p>Встречаем как родных, провожаем как друзей.</p>
         </div>
         
         <div class="scroll-indicator">
@@ -508,14 +551,12 @@
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
 
-            // Плавное следование кольца
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
             }, { duration: 500, fill: "forwards" });
         });
 
-        // Эффект при наведении на кликабельные элементы
         const interactables = document.querySelectorAll('a, .card, #burger-btn, .close-modal');
         interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -528,86 +569,76 @@
             });
         });
 
-        // --- 2. Анимация появления контента при скролле (Intersection Observer) ---
-        const observerOptions = {
-            threshold: 0.1, // Срабатывает, когда 10% элемента видно
-            rootMargin: "0px 0px -50px 0px" // Чуть-чуть заранее
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Анимируем только один раз
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fly-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // --- 3. Искры от костра на фоне (Canvas) ---
-        const canvas = document.getElementById('sparks-canvas');
+        // --- 2. СИСТЕМА ИСКР (Particle System) ---
+        const canvas = document.getElementById('sparksCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        let particles = [];
+        const particleCount = 70;
 
-        let particlesArray = [];
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         class Particle {
-            constructor() {
+            constructor() { this.init(); }
+            init() {
                 this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 100;
-                this.size = Math.random() * 2.5 + 0.5;
-                this.speedY = Math.random() * 1 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random() * 0.8 + 0.2;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.speedY = (Math.random() - 0.5) * 0.8;
+                this.alpha = Math.random() * 0.5 + 0.2;
             }
             update() {
-                this.y -= this.speedY;
                 this.x += this.speedX;
-                if (this.y < -10) {
-                    this.y = canvas.height + 10;
-                    this.x = Math.random() * canvas.width;
-                }
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
             }
             draw() {
-                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#d4af37';
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.alpha})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        function initSparks() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 15000; // Плотность искр
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
-            }
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
         }
 
         function animateSparks() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateSparks);
         }
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initSparks();
-        });
-
-        initSparks();
         animateSparks();
 
+        // --- 3. Анимация появления контента при скролле (Intersection Observer) ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
 
-        // --- 4. Логика Бургер Меню (сохранена) ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fly-in').forEach(el => { observer.observe(el); });
+
+        // --- 4. Логика Бургер Меню ---
         const burgerBtn = document.getElementById('burger-btn');
         const burgerLottie = document.getElementById('burger-lottie');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -636,7 +667,7 @@
             });
         });
 
-        // --- 5. Логика Всплывающего Окна (Modal) (сохранена) ---
+        // --- 5. Логика Всплывающего Окна (Modal) ---
         const modal = document.getElementById('gallery-modal');
         const modalImg = document.getElementById('modal-img');
         const closeModal = document.getElementById('close-modal');
@@ -675,6 +706,5 @@
             }
         });
     </script>
-
 </body>
 </html>
