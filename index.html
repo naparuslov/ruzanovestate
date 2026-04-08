@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Усадьба Рузановых - Ваш Уют на Берегу Телецкого Озера</title>
+    
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS — НАШИ ШЕЙДЕРЫ И МАТЕРИАЛЫ */
+        :root {
+            --primary-dark: #0a0b0e; /* Глубокий цвет ночного неба */
+            --primary-muted: #13161c; /* Чуть светлее для секций, холодный темный */
+            --accent-gold: #d4af37;  /* Настоящее золото */
+            --accent-gold-dark: #aa8929;
+            --accent-gold-gradient: linear-gradient(90deg, transparent, #d4af37, #ffdf73, #d4af37, transparent);
+            --text-light: #f5f5f5;
+            --text-muted: #b0b5be;
+            --white: #ffffff;
+            --transition-smooth: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            --font-handwritten: 'Caveat', cursive;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none; /* Убираем стандартный курсор для ПК */
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* КАСТОМНЫЙ КУРСОР */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: var(--accent-gold);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* 1. Глобальный анимированный фон из твоей картинки (Те самые круги) */
+        .global-bg-circles {
+            position: fixed;
+            top: -10%; left: -10%; right: -10%; bottom: -10%;
+            background: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1775635428/Hero22.png') center/cover;
+            opacity: 0.15; /* Сделали чуть прозрачнее для благородства */
+            filter: blur(5px);
+            z-index: -2;
+            pointer-events: none;
+            animation: breathe 20s ease-in-out infinite;
+        }
+
+        /* Канвас для искр */
+        #sparks-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.08); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.15; }
+        }
+
+        /* 2. Золотая Линия "Золотого Сечения" (Улучшенная) */
+        .gold-divider {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gold-gradient);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            z-index: 5;
+        }
+
+        /* 3. Навигация (Шапка сайта) */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 11, 14, 0.7);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: absolute;
+            left: 50px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .header-social { display: flex; gap: 15px; margin-right: 30px; }
+        .social-link { transition: transform 0.3s ease; cursor: none; }
+        .social-link:hover { transform: scale(1.1); }
+
+        /* Выезжающее мобильное меню */
+        .mobile-menu {
+            position: fixed;
+            top: 0; right: 0; width: 100vw; height: 100vh;
+            background: rgba(19, 22, 28, 0.95);
+            backdrop-filter: blur(10px);
+            transform: translateY(-100%);
+            transition: var(--transition-smooth);
+            z-index: 99;
+            padding: 150px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        .mobile-menu a {
+            text-decoration: none; color: var(--white); font-size: 28px;
+            font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+            position: relative; transition: color 0.3s ease; cursor: none;
+        }
+        .mobile-menu a:hover { color: var(--accent-gold); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        .mobile-menu a::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%;
+            width: 0; height: 2px; background: var(--accent-gold);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        .mobile-menu a:hover::after { width: 100%; left: 0; }
+
+        /* 4. Первый экран (Hero) */
+        .hero {
+            position: relative; height: 100vh; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+
+        .hero-sky {
+            position: absolute; top: 0; left: 0; width: 300%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2500&auto=format&fit=crop') center/cover;
+            animation: panSky 120s linear infinite; z-index: 1;
+        }
+        @keyframes panSky { 0% { transform: translateX(0); } 100% { transform: translateX(-33%); } }
+
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(10,11,14,0.4), rgba(10,11,14,0.9) 90%);
+            z-index: 3;
+        }
+
+        .hero-content { position: relative; z-index: 4; color: var(--white); }
+        .hero-content h1 {
+            font-size: 5rem; margin-bottom: 25px;
+            text-shadow: 0 4px 25px rgba(0,0,0,0.8); line-height: 1.1;
+            background: linear-gradient(to bottom, #fff, #d4af37);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-content p {
+            font-size: 1.8rem; max-width: 700px; margin: 0 auto;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8); color: #e0e0e0;
+        }
+
+        /* Анимированная стрелка вниз */
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 10px;
+            opacity: 0.8; transition: opacity 0.3s;
+        }
+        .scroll-indicator:hover { opacity: 1; }
+        .mouse {
+            width: 30px; height: 50px; border: 2px solid var(--accent-gold);
+            border-radius: 15px; position: relative;
+        }
+        .mouse::before {
+            content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 6px; height: 6px; background: var(--accent-gold); border-radius: 50%;
+            animation: scrollBounce 2s infinite; box-shadow: 0 0 10px var(--accent-gold);
+        }
+        @keyframes scrollBounce {
+            0% { top: 10px; opacity: 1; }
+            100% { top: 30px; opacity: 0; }
+        }
+
+        /* 5. Секции с контентом */
+        .section-padding { padding: 120px 8vw; position: relative; }
+        .section-title {
+            text-align: center; font-size: 2.8rem; color: var(--accent-gold);
+            margin-bottom: 70px; text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Сетка для комнат */
+        .grid-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;
+        }
+
+        .card {
+            background: var(--primary-dark);
+            border-radius: 2px; /* Убрали сильное скругление для строгой формы */
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: var(--transition-smooth);
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        /* Золотые уголки для карточек */
+        .card::before, .card::after {
+            content: ''; position: absolute; width: 30px; height: 30px;
+            border: 2px solid var(--accent-gold); transition: all 0.4s ease;
+            z-index: 10; pointer-events: none; opacity: 0.5;
+        }
+        .card::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .card::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+        
+        .card:hover::before { top: 0px; left: 0px; opacity: 1; box-shadow: inset 5px 5px 10px rgba(212, 175, 55, 0.2); }
+        .card:hover::after { bottom: 0px; right: 0px; opacity: 1; box-shadow: inset -5px -5px 10px rgba(212, 175, 55, 0.2); }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .card-img-placeholder {
+            width: 100%; height: 280px;
+            background: rgba(212, 175, 55, 0.05);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent-gold); font-weight: bold; font-size: 1.2rem;
+            background-size: cover; background-position: center;
+            position: relative; overflow: hidden;
+        }
+        
+        /* Эффект зума картинки при наведении на карточку */
+        .card-img-placeholder::after {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: inherit; transition: transform 0.8s ease; z-index: -1;
+        }
+        .card:hover .card-img-placeholder::after { transform: scale(1.1); }
+
+        .card-info { padding: 30px; position: relative; z-index: 2; background: var(--primary-dark); }
+        .card-title { font-size: 1.6rem; margin-bottom: 15px; color: var(--white); transition: color 0.3s ease; }
+        .card:hover .card-title { color: var(--accent-gold); }
+        .card-text { color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 20px; }
+        .card-price {
+            font-weight: bold; color: var(--accent-gold); font-size: 1.3rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 20px;
+        }
+
+        /* АНИМАЦИИ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ */
+        .fly-in {
+            opacity: 0; transform: translateY(80px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .fly-in.visible { opacity: 1; transform: translateY(0) scale(1); }
+        
+        /* Задержки для поочередного вылетания */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.5s; }
+
+
+        /* Секция Отзывов */
+        .reviews-wrapper { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+        .review-box {
+            background: var(--primary-dark); padding: 40px; border-radius: 2px;
+            width: 100%; max-width: 420px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--accent-gold);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .review-box:hover {
+            transform: scale(1.03); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        .review-author { font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; display: block; color: var(--accent-gold); }
+        .review-text { color: var(--text-muted); font-style: italic; font-size: 1.1rem; line-height: 1.8; }
+
+        /* 6. Всплывающее окно Галереи */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 11, 14, 0.95); backdrop-filter: blur(5px);
+            z-index: 200; display: none; justify-content: center; align-items: center; padding: 50px;
+        }
+        .modal-content {
+            max-width: 90%; max-height: 90%; border-radius: 2px; overflow: hidden;
+            position: relative; background: var(--primary-dark);
+            border: 2px solid var(--accent-gold); box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+        }
+        .modal-img { max-width: 100%; max-height: 100%; display: block; }
+        .close-modal {
+            position: absolute; top: -20px; right: -20px; width: 50px; height: 50px;
+            background: var(--accent-gold); color: var(--primary-dark); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 30px;
+            cursor: none; z-index: 201; transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .close-modal:hover { background: #ffdf73; transform: scale(1.1) rotate(90deg); }
+
+        /* Подвал */
+        footer {
+            background: var(--primary-muted); color: var(--white);
+            padding: 70px 8vw; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2); position: relative;
+        }
+        .footer-col { max-width: 350px; z-index: 2;}
+        .footer-logo { font-size: 24px; color: var(--accent-gold); font-weight: bold; margin-bottom: 15px; }
+        .footer-text { color: var(--text-muted); line-height: 1.8; }
+
+        /* Мобильная адаптивность */
+        @media (max-width: 768px) {
+            * { cursor: auto; } /* Возвращаем курсор на телефонах */
+            .cursor-dot, .cursor-outline { display: none; }
+            header { padding: 15px 30px; }
+            .logo { left: 30px; font-size: 18px; }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-content p { font-size: 1.3rem; }
+            .section-padding { padding: 80px 5vw; }
+            .section-title { font-size: 2.2rem; }
+            .modal { padding: 20px; }
+            .header-social { display: none; }
+        }
+
+        /* Рукописный шрифт */
+        .hero-content p, .card-text, .review-text, #about p {
+            font-family: var(--font-handwritten);
+            font-size: 1.6rem; line-height: 1.3; letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="global-bg-circles"></div>
+    <canvas id="sparks-canvas"></canvas>
+
+    <header>
+        <div class="logo">Усадьба Рузановых</div>
+
+        <div class="header-social">
+            <a href="#" class="social-link" title="WhatsApp">
+                <lottie-player src="https://res.cloudinary.com/dwexyklqe/raw/upload/v1775635428/Whatsapp_gradient_color_3D_icon_rotation_Lottie_JSON_animation.json" background="transparent" speed="1" style="width: 50px; height: 50px;" loop autoplay></lottie-player>
+            </a>
+            <a href="#" class="social-link" title="Telegram">
+                <lottie-player src="https://res.cloudinary.com/dwexyklqe/raw/upload/v1775635427/Telegram_logo.json" background="transparent" speed="1" style="width: 50px; height: 50px;" loop autoplay></lottie-player>
+            </a>
+        </div>
+        
+        <div id="burger-btn" style="cursor: none; width: 50px; height: 50px; z-index: 101;">
+            <lottie-player id="burger-lottie" src="https://res.cloudinary.com/dwexyklqe/raw/upload/v1775635427/Burger_menu.json" background="transparent" speed="1.5" keep-last-frame></lottie-player>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about">О нас</a>
+        <a href="#rooms">Проживание</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contacts">Контакты</a>
+    </div>
+
+    <section class="hero">
+        <div class="hero-sky"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Усадьба Рузановых</h1>
+            <p>Почувствуйте магию Алтая. Ваш уютный причал на берегу легендарного Телецкого озера.</p>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+            <span style="font-family: var(--font-handwritten); font-size: 1.2rem; color: var(--accent-gold);">Листайте вниз</span>
+        </div>
+
+        <div class="gold-divider"></div>
+    </section>
+
+    <section id="about" class="section-padding">
+        <h2 class="section-title fly-in">Атмосфера отдыха</h2>
+        <div class="fly-in delay-1" style="max-width: 900px; margin: 0 auto; text-align: center; color: var(--text-muted);">
+            <p>В гостевом доме “Рузановых” Вас ждет спокойствие, комфорт и незабываемый семейный отдых. Всего в 70 метрах от чистейшего Телецкого озера.</p>
+            <br>
+            <p>На территории: открытый бассейн, летняя кухня, уютные беседки, мангальная зона и детская площадка. Зимняя сказка ждет вас — горнолыжный комплекс "Телецкий" всего в 6 км!</p>
+            <br>
+            <p style="color: var(--accent-gold); font-weight: bold; font-size: 1.8rem;">Акция! Скидка 10% на зимний отдых (Февраль – Апрель)!</p>
+        </div>
+        <div class="gold-divider"></div>
+    </section>
+
+    <section id="rooms" class="section-padding" style="background: var(--primary-muted);">
+        <h2 class="section-title fly-in">Варианты размещения</h2>
+        <div class="grid-cards">
+            
+            <div class="card gallery-card fly-in delay-1" id="studio-card">
+                <div class="card-img-placeholder" style="background-image: url('https://via.placeholder.com/600x400');">
+                    ФОТО ТУТ
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">(Дом-студия)</h3>
+                    <p class="card-text">Новый благоустроенный дом 30 кв.м., идеально подходит для компании до 5 человек. Есть всё необходимое.</p>
+                    <div class="card-price">от 8000 руб./сутки</div>
+                </div>
+            </div>
+
+            <div class="card gallery-card fly-in delay-2" id="large-house-card">
+                <div class="card-img-placeholder" style="background-image: url('https://via.placeholder.com/600x400');">
+                    ФОТО ТУТ
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Большой дом</h3>
+                    <p class="card-text">4 уютные спальни, оборудованная кухня. Санузел с душем на каждом этаже. Вместимость до 16 человек.</p>
+                    <div class="card-price">Цена по запросу</div>
+                </div>
+            </div>
+
+            <div class="card gallery-card fly-in delay-3" id="4bed-card">
+                <div class="card-img-placeholder" style="background-image: url('https://via.placeholder.com/600x400');">
+                    ФОТО ТУТ
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Номер 4-х местный</h3>
+                    <p class="card-text">Вид на озеро, двуспальная и односпальная кровати, раскладное кресло, TV, Wi-Fi.</p>
+                    <div class="card-price">от 6000 руб./сутки</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="gold-divider"></div>
+    </section>
+
+    <section id="reviews" class="section-padding">
+        <h2 class="section-title fly-in">Гости говорят</h2>
+        <div class="reviews-wrapper">
+            
+            <div class="review-box fly-in delay-1">
+                <span class="review-author">Диана Григорьева</span>
+                <p class="review-text">"Это был один из лучших отдыхов на Телецком озере. Сердце дома - хозяйка Галина! Домашняя Богиня! В доме есть всё: чистые постели, красивая посуда... Всем сердцем БЛАГОДАРЮ!"</p>
+            </div>
+
+            <div class="review-box fly-in delay-2">
+                <span class="review-author">Olga Ivanova</span>
+                <p class="review-text">"Уютный интерьер, на кухне есть всё необходимое. Приятно встретить рассвет с чашечкой кофе, мангал, качели... Рекомендую!"</p>
+            </div>
+
+            <div class="review-box fly-in delay-3">
+                <span class="review-author">Булат</span>
+                <p class="review-text">"Отличная усадьба. Добродушные хозяева. Все чисто и уютно по-домашнему. Всем рекомендую это место."</p>
+            </div>
+
+        </div>
+        <div class="gold-divider"></div>
+    </section>
+
+    <div class="modal" id="gallery-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <img src="" alt="Gallery Image" class="modal-img" id="modal-img">
+        </div>
+    </div>
+
+    <footer id="contacts">
+        <div class="footer-col fly-in">
+            <div class="footer-logo">Усадьба Рузановых</div>
+            <p class="footer-text">Республика Алтай, Турочакский район,<br>село Иогач, ул. Центральная, 15/1.</p>
+        </div>
+        <div class="footer-col fly-in delay-2">
+            <p class="footer-text" style="font-weight: bold; margin-bottom: 5px;">Позвоните нам:</p>
+            <p class="footer-text" style="font-size: 1.5rem; color: var(--accent-gold); font-weight: bold;">+7 960 967-44-13</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Кастомный Курсор ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Плавное следование кольца
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Эффект при наведении на кликабельные элементы
+        const interactables = document.querySelectorAll('a, .card, #burger-btn, .close-modal');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorOutline.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // --- 2. Анимация появления контента при скролле (Intersection Observer) ---
+        const observerOptions = {
+            threshold: 0.1, // Срабатывает, когда 10% элемента видно
+            rootMargin: "0px 0px -50px 0px" // Чуть-чуть заранее
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Анимируем только один раз
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fly-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- 3. Искры от костра на фоне (Canvas) ---
+        const canvas = document.getElementById('sparks-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.8 + 0.2;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -10) {
+                    this.y = canvas.height + 10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initSparks() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 15000; // Плотность искр
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateSparks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateSparks);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initSparks();
+        });
+
+        initSparks();
+        animateSparks();
+
+
+        // --- 4. Логика Бургер Меню (сохранена) ---
+        const burgerBtn = document.getElementById('burger-btn');
+        const burgerLottie = document.getElementById('burger-lottie');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let isMenuOpen = false;
+
+        burgerBtn.addEventListener('click', () => {
+            if (!isMenuOpen) {
+                burgerLottie.setDirection(1);
+                burgerLottie.play();
+                mobileMenu.style.transform = 'translateY(0)';
+            } else {
+                burgerLottie.setDirection(-1);
+                burgerLottie.play();
+                mobileMenu.style.transform = 'translateY(-100%)';
+            }
+            isMenuOpen = !isMenuOpen;
+        });
+
+        const menuLinks = document.querySelectorAll('.mobile-menu a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                burgerLottie.setDirection(-1);
+                burgerLottie.play();
+                mobileMenu.style.transform = 'translateY(-100%)';
+                isMenuOpen = false;
+            });
+        });
+
+        // --- 5. Логика Всплывающего Окна (Modal) (сохранена) ---
+        const modal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('modal-img');
+        const closeModal = document.getElementById('close-modal');
+        const galleryCards = document.querySelectorAll('.gallery-card');
+
+        const galleryData = {
+            'studio-card': ['https://via.placeholder.com/600x400'],
+            'large-house-card': ['https://via.placeholder.com/600x400'],
+            '4bed-card': ['https://via.placeholder.com/600x400']
+        };
+
+        function openModal(cardId) {
+            const images = galleryData[cardId];
+            if (images && images.length > 0) {
+                modalImg.src = images[0];
+                modal.style.display = 'flex';
+            }
+        }
+
+        galleryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const cardId = card.id;
+                openModal(cardId);
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            modalImg.src = '';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                modalImg.src = '';
+            }
+        });
+    </script>
+
+</body>
+</html>
