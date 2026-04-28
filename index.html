@@ -470,6 +470,46 @@
 @media (max-width: 768px) {
     .reveal-section { flex-direction: column !important; text-align: center; }
 }
+
+/* Видео-галерея */
+    .video-section {
+        margin-top: 60px;
+        text-align: center;
+    }
+    .video-grid {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+    .video-item {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .video-item:hover {
+        transform: scale(1.1);
+    }
+    .video-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid var(--accent-gold);
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .video-circle video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .video-caption {
+        margin-top: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        color: var(--accent-gold);
+    }
     </style>
 </head>
 <body>
@@ -491,6 +531,9 @@
             </a>
             <a href="https://vk.com/id70492451" class="social-link" title="ВКонтакте" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/VK_Compact_Logo_%282021-present%29.svg" alt="VK" style="width: 32px; height: 32px; margin-top: 9px;">
+            </a>
+            <a href="https://max.ru/u/f9LHodD0cOL0N2IQSYgyRkVMrFfPKQltcV-t-RLbMdjqGIHVfMfu6UEKLzA" class="social-link" title="Max" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-top: 9px; background: #0077ff; border-radius: 50%; color: #ffffff; font-weight: bold; text-decoration: none; font-size: 10px; border: 1px solid rgba(255,255,255,0.2);">
+                MAX
             </a>
         </div>
         
@@ -571,24 +614,48 @@
             </div>
         </div>
 
-        <div class="grid-cards">
-            <div class="card gallery-card fly-in delay-1" id="large-house-card">
-                <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1775653784/%D0%92%D0%B5%D1%87%D0%B5%D1%80.jpg');"></div>
-                <div class="card-info">
-                    <h3 class="card-title">Гостевой дом</h3>
-                    <p class="card-text">4 уютные спальни, оборудованная кухня. Санузел с душем на каждом этаже.</p>
-                    <div class="card-price">Вместимость: до 18 человек</div>
-                    <div class="card-price">27000 руб./сутки</div>
+        <div class="card gallery-card fly-in delay-1" id="large-house-card" style="max-width: 800px; margin: 0 auto 50px auto;">
+            <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1775653784/%D0%92%D0%B5%D1%87%D0%B5%D1%80.jpg'); height: 350px;"></div>
+            <div class="card-info" style="text-align: center;">
+                <h3 class="card-title">Гостевой дом</h3>
+                <p class="card-text">Большое общее пространство для отдыха. Внутри дома расположены уютные номера, которые можно снять отдельно, либо арендовать весь дом целиком.</p>
+                <div class="card-price">Вместимость: до 18 человек</div>
+                <div class="card-price">27000 руб./сутки (весь дом)</div>
+            </div>
+        </div>
+
+        <h3 class="section-title fly-in" style="font-size: 2rem; margin-bottom: 40px; color: var(--text-light); text-transform: none;">Номера внутри Гостевого дома</h3>
+
+        <div class="grid-cards" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
+            <div class="card gallery-card fly-in delay-1" id="room-3bed">
+                <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1777349319/anJGc44totjhs1toVf9I07woiDKI7hzVV-r9o4huY7BVKGCTHA1ZdTu-SJEpFhximkfXaaoO_9D4HwiZv2plKfSZ_1.jpg'); height: 200px;"></div>
+                <div class="card-info" style="padding: 20px;">
+                    <h3 class="card-title" style="font-size: 1.3rem;">3-х местный номер</h3>
+                    <div class="card-price" style="font-size: 1.1rem; border-top: none; padding-top: 0;">5000 руб./сутки</div>
                 </div>
             </div>
 
-            <div class="card gallery-card fly-in delay-2" id="4bed-card">
-                <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1775658102/4-%D1%85_%D0%BC%D0%B5%D1%81%D1%82.jpg');"></div>
-                <div class="card-info">
-                    <h3 class="card-title">Номер 4-х местный</h3>
-                    <p class="card-text">Вид на озеро, кровати из массива, уютное кресло-кровать, TV и Wi-Fi.</p>
-                    <div class="card-price">Вместимость: 4 человека</div>
-                    <div class="card-price">6000 руб./сутки</div>
+            <div class="card gallery-card fly-in delay-2" id="room-4bed-1">
+                <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/0GxJOwxGhRhksQFo4iTdRTO1jba5KNZMWUW_PFQWb4Chfdfe-A3d5Og0B1Lt78Ny1P3azdf5sxBmG9l1dY2OU80t.jpg'); height: 200px;"></div>
+                <div class="card-info" style="padding: 20px;">
+                    <h3 class="card-title" style="font-size: 1.3rem;">4-х местный (Комната 1)</h3>
+                    <div class="card-price" style="font-size: 1.1rem; border-top: none; padding-top: 0;">6000 руб./сутки</div>
+                </div>
+            </div>
+
+            <div class="card gallery-card fly-in delay-3" id="room-4bed-2">
+                <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/Gfg7rvy7MgZNS35YNQ1rGwLpJa4sfXPuUHgNvZ9B50jmw8IxI7YgrLKln8tY4sl5qY-bDq_UXmTMincEk1ENk_1x.jpg'); height: 200px;"></div>
+                <div class="card-info" style="padding: 20px;">
+                    <h3 class="card-title" style="font-size: 1.3rem;">4-х местный (Комната 2)</h3>
+                    <div class="card-price" style="font-size: 1.1rem; border-top: none; padding-top: 0;">6000 руб./сутки</div>
+                </div>
+            </div>
+
+            <div class="card gallery-card fly-in delay-4" id="room-5bed">
+                <div class="card-img-placeholder" style="background-image: url('https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/ugbTzs_pZN6BWaHbafpZ9XOu16F54mQaEHL2_aKGhXIyh7n6ydL7Y7ORJu1-C3UkDsVj5W9CC6gi2pFzY57dXRf9.jpg'); height: 200px;"></div>
+                <div class="card-info" style="padding: 20px;">
+                    <h3 class="card-title" style="font-size: 1.3rem;">5-ти местный номер</h3>
+                    <div class="card-price" style="font-size: 1.1rem; border-top: none; padding-top: 0;">6500 руб./сутки</div>
                 </div>
             </div>
         </div>
@@ -850,18 +917,20 @@
                 'https://res.cloudinary.com/dwexyklqe/image/upload/v1776649449/_38zChWrEx8aMzSY0VkcKjSxkA2sLpyNOSb6qDCpV9DGdmPsaJyjJyvbdy1_uKxYs1AIGl8I9ohCVn9HxlwhAsLS.jpg'
             ],
             'large-house-card': [
-                'ССЫЛКА_НА_ФОТО_1_ГОСТЕВОЙ',
-                'ССЫЛКА_НА_ФОТО_2_ГОСТЕВОЙ',
-                'ССЫЛКА_НА_ФОТО_3_ГОСТЕВОЙ',
-                'ССЫЛКА_НА_ФОТО_4_ГОСТЕВОЙ',
-                'ССЫЛКА_НА_ФОТО_5_ГОСТЕВОЙ'
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1775653784/%D0%92%D0%B5%D1%87%D0%B5%D1%80.jpg'
             ],
-            '4bed-card': [
-                'ССЫЛКА_НА_ФОТО_1_НОМЕР_4М',
-                'ССЫЛКА_НА_ФОТО_2_НОМЕР_4М',
-                'ССЫЛКА_НА_ФОТО_3_НОМЕР_4М',
-                'ССЫЛКА_НА_ФОТО_4_НОМЕР_4М',
-                'ССЫЛКА_НА_ФОТО_5_НОМЕР_4М'
+            'room-3bed': [
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777349319/anJGc44totjhs1toVf9I07woiDKI7hzVV-r9o4huY7BVKGCTHA1ZdTu-SJEpFhximkfXaaoO_9D4HwiZv2plKfSZ_1.jpg',
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/WbpQcDmAAXN2pQHES0fN1BXfSWoM3iIYwh_evExO7vjGhYF3UvyKB2KqRGygLB87jcJMWTv5awazkgyC1P3UG4-L.jpg',
+            ],
+            'room-4bed-1': [
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/0GxJOwxGhRhksQFo4iTdRTO1jba5KNZMWUW_PFQWb4Chfdfe-A3d5Og0B1Lt78Ny1P3azdf5sxBmG9l1dY2OU80t.jpg'
+            ],
+            'room-4bed-2': [
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/Gfg7rvy7MgZNS35YNQ1rGwLpJa4sfXPuUHgNvZ9B50jmw8IxI7YgrLKln8tY4sl5qY-bDq_UXmTMincEk1ENk_1x.jpg'
+            ],
+            'room-5bed': [
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777349320/ugbTzs_pZN6BWaHbafpZ9XOu16F54mQaEHL2_aKGhXIyh7n6ydL7Y7ORJu1-C3UkDsVj5W9CC6gi2pFzY57dXRf9.jpg'
             ]
         };
 
