@@ -510,6 +510,58 @@
         font-size: 0.9rem;
         color: var(--accent-gold);
     }
+
+    /* Горизонтальная скролл-галерея */
+    .horizontal-gallery-wrapper {
+        width: 100%;
+        padding: 0 8vw 80px 8vw; /* Выравниваем по сетке секций */
+        overflow-x: auto;
+        display: flex;
+        gap: 20px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent-gold) rgba(28, 32, 38, 0.5);
+    }
+    
+    /* Кастомный скроллбар для Webkit (Chrome, Safari) */
+    .horizontal-gallery-wrapper::-webkit-scrollbar {
+        height: 6px;
+    }
+    .horizontal-gallery-wrapper::-webkit-scrollbar-track {
+        background: rgba(28, 32, 38, 0.5);
+        border-radius: 10px;
+    }
+    .horizontal-gallery-wrapper::-webkit-scrollbar-thumb {
+        background-color: var(--accent-gold);
+        border-radius: 10px;
+    }
+
+    .hg-item {
+        flex: 0 0 auto;
+        width: 320px; 
+        height: 220px;
+        border-radius: 12px;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        object-fit: cover;
+        scroll-snap-align: center;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    }
+
+    .hg-item:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(212, 175, 55, 0.3);
+        border-color: rgba(212, 175, 55, 0.6);
+    }
+
+    @media (max-width: 768px) {
+        .hg-item {
+            width: 260px;
+            height: 180px;
+        }
+        .horizontal-gallery-wrapper {
+            padding: 0 5vw 50px 5vw;
+        }
+    }
     </style>
 </head>
 <body>
@@ -707,6 +759,17 @@
                  style="width:100%; border-radius:16px; border: 1px solid var(--accent-gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         </div>
     </section>
+
+    <div class="horizontal-gallery-wrapper fly-in delay-1">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408060/oqhrMZ-1jUK2dhc-Y4D1YStfTY3QYHYFvHk6XKUwGOch9jeY5nzyhto6fz4ZTf0EbsgvMWmDRAfYS7_CG6VxtAZ4.jpg" alt="Пейзаж 1" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408059/nR2e8yxXouUn4fy88gqMRoZzVG3JyiMurzyiBXmntuBVf971SN_4DHscy1G6Bkui-o2oFBi21QGbBeUgVe4qdlYb.jpg" alt="Пейзаж 2" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408059/pn0aPSNOHzPmRroOzShkTz8rnkQ2MTvU_Uc4W0ZpDdomIpX0uWlsh4WkugyOs6wtKrxsK1uqAYIjsUEmUAF9j3KM.jpg" alt="Пейзаж 3" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408059/M-SfLbMPrZPIdD-45porCiPDEIIjsHYt9wrL7CnGZ57P2veNDdAFM7mVpPiKARPNDi7-zvRm6GRMdz-TsFsPzFc9.jpg" alt="Пейзаж 4" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408058/G1AEX9kBB8i7RfjZI6X5TOpCsLErRN4SrYp6AUu7zPsmCPtxUb7pv38inHbk-MUwbBsftfpD20or6NyPioU5DTvj.jpg" alt="Пейзаж 5" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408058/dpUqRdAqKNfJ-Sm3tB8xZMd6zFeA2m74Y5A5OgCXqcQkpKCjMwFDMyzGgoTURwXp33sw0lTskwaoFS0h_peSf0iy.jpg" alt="Пейзаж 6" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408058/11J6-um4OO_YBfXv2RpT_93fS51pvmtNO4hhX5F5RK8tsTqQtkRnLIHm7dzgC3IRs-P6AE-gHySLQAATJmuxWrjx.jpg" alt="Пейзаж 7" class="hg-item">
+        <img src="https://res.cloudinary.com/dwexyklqe/image/upload/v1777408059/MuXgrQL4vlMoGUKrNUeIEE3ZpUMpx21NimEyWTtmio_R1HHuU8frquGSRXntwzmFkmBOhldWTQkiPzPCn3Y4N5n_.jpg" alt="Пейзаж 8" class="hg-item">
+    </div>
 
     <section id="reviews" class="section-padding">
         <h2 class="section-title fly-in">Гости говорят</h2>
@@ -917,7 +980,12 @@
                 'https://res.cloudinary.com/dwexyklqe/image/upload/v1776649449/_38zChWrEx8aMzSY0VkcKjSxkA2sLpyNOSb6qDCpV9DGdmPsaJyjJyvbdy1_uKxYs1AIGl8I9ohCVn9HxlwhAsLS.jpg'
             ],
             'large-house-card': [
-                'https://res.cloudinary.com/dwexyklqe/image/upload/v1775653784/%D0%92%D0%B5%D1%87%D0%B5%D1%80.jpg'
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1775653784/%D0%92%D0%B5%D1%87%D0%B5%D1%80.jpg',
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777406432/U98G32aMfX6OAa51QJRGd2uyJbtNvXUR15dLpxpOBQIQIsgtnhMLjzOyCXBlyVt3wlocqjHonC1DZ_tcTen6xd_N.jpg',
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777406432/CHQ1vxWtDH-wLzknG_-RDxjx15JlrvSWm7QveZUT5Ib6EymDuDog2jqI4EEB5k3EyqVtY_Viawzg1KDh3jtDO54r_1.jpg',
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777406431/bEJ4qU8xuowRbupEk6Z1SxNPMNJ1SPKE5TA7UmDPJ4ckTx_Th2P-PvCJExeW7V7B1ghArqtHo5KyEdWpPM2Ix_Ak.jpg',
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777406431/QmFH5MnAFe9CnbthE_zK15Lw6ZmDWhGC4djnEAP-RE2h_lI7Fx-uLpPGec2qKXfQU2FE-p7zB05UIDWVXSTBlNQv.jpg',
+                'https://res.cloudinary.com/dwexyklqe/image/upload/v1777406431/VjfjpsuviGRqRQe_wX1PPUWKEAVyMjq815j7iddgJyr-mJZ2jCjQfy_530S7qmkR3rL3OATTcvE5R-2_zGRQCMN3.jpg'
             ],
             'room-3bed': [
                 'https://res.cloudinary.com/dwexyklqe/image/upload/v1777349319/anJGc44totjhs1toVf9I07woiDKI7hzVV-r9o4huY7BVKGCTHA1ZdTu-SJEpFhximkfXaaoO_9D4HwiZv2plKfSZ_1.jpg',
